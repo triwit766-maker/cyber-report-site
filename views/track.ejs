@@ -1,0 +1,47 @@
+<%- include('partials/header') %>
+
+<div class="container container-narrow">
+  <div class="page-head">
+    <h1>ติดตามสถานะรายงาน</h1>
+    <p>กรอกรหัสติดตาม (Ticket ID) ที่ได้รับเมื่อแจ้งปัญหา เพื่อดูสถานะและรายละเอียดล่าสุด — ไม่จำเป็นต้องเข้าสู่ระบบ</p>
+  </div>
+
+  <div class="card">
+    <form method="GET" action="/track" id="track-form">
+      <div class="form-group">
+        <label for="ticket">รหัสติดตาม (เช่น CR-2026-A7KQ2M)</label>
+        <input type="text" id="ticket" name="ticket" class="form-control" placeholder="CR-2026-XXXXXX"
+               value="<%= ticket %>" style="font-family:var(--mono); letter-spacing:0.06em" required>
+        <div class="hint">รหัสนี้ปรากฏบนหน้ายืนยันหลังจากคุณแจ้งปัญหาเรียบร้อยแล้ว</div>
+      </div>
+      <button type="submit" class="btn btn-primary">ค้นหารายงาน</button>
+    </form>
+  </div>
+
+  <% if (notFound) { %>
+    <div class="alert alert-error" style="margin-top:1.3rem">
+      ไม่พบรายงานด้วยรหัส <strong><%= ticket %></strong> — กรุณาตรวจสอบรหัสอีกครั้ง (รหัสมีตัวอักษรตัวใหญ่และตัวเลข)
+    </div>
+  <% } %>
+
+  <% if (report) { %>
+    <div class="card" style="margin-top:1.3rem">
+      <h2>ผลการค้นหา</h2>
+      <p class="sub">รายละเอียดและสถานะล่าสุดของรายงาน</p>
+      <div class="detail-grid">
+        <div class="detail-row"><div class="k">รหัสติดตาม</div><div class="v ticket-id"><%= report.ticket_id %></div></div>
+        <div class="detail-row"><div class="k">ประเภทปัญหา</div><div class="v"><%= ISSUE_LABEL[report.issue_type] %></div></div>
+        <div class="detail-row"><div class="k">ระดับความรุนแรง</div><div class="v"><span class="badge <%= SEVERITY_BADGE[report.severity] %>"><%= SEVERITY_LABEL[report.severity] %></span></div></div>
+        <div class="detail-row"><div class="k">สถานะปัจจุบัน</div><div class="v"><span class="badge <%= STATUS_BADGE[report.status] %>"><%= STATUS_LABEL[report.status] %></span></div></div>
+        <div class="detail-row"><div class="k">วันที่แจ้ง</div><div class="v"><%= report.created_at %></div></div>
+        <div class="detail-row"><div class="k">อัปเดตล่าสุด</div><div class="v"><%= report.updated_at %></div></div>
+        <div class="detail-row"><div class="k">รายละเอียด</div><div class="v detail-desc" style="width:100%"><%= report.description %></div></div>
+      </div>
+      <div class="alert alert-info" style="margin-top:1.2rem">
+        หากต้องการสอบถามเพิ่มเติม โปรดติดต่อ <a href="mailto:<%= ORG.contactEmail %>"><%= ORG.contactEmail %></a> พร้อมระบุรหัสรายงานนี้
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

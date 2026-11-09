@@ -1,0 +1,47 @@
+<%- include('../partials/header', { title: 'รายละเอียดรายงาน' }) %>
+
+<div class="container container-narrow">
+  <div class="page-head">
+    <h1>รายละเอียดรายงาน</h1>
+    <p><a href="/admin">← กลับแผงควบคุม</a></p>
+  </div>
+
+  <% if (!report) { %>
+    <div class="alert alert-error">ไม่พบรายงานที่ระบุ</div>
+  <% } else { %>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.6rem;margin-bottom:1rem">
+        <span class="ticket-id" style="font-size:1.1rem"><%= report.ticket_id %></span>
+        <span class="badge <%= STATUS_BADGE[report.status] %>"><%= STATUS_LABEL[report.status] %></span>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-row"><div class="k">รหัสติดตาม</div><div class="v ticket-id"><%= report.ticket_id %></div></div>
+        <div class="detail-row"><div class="k">รหัสภายใน</div><div class="v">#<%= report.id %></div></div>
+        <div class="detail-row"><div class="k">ประเภทปัญหา</div><div class="v"><%= ISSUE_LABEL[report.issue_type] %></div></div>
+        <div class="detail-row"><div class="k">ระดับความรุนแรง</div><div class="v"><span class="badge <%= SEVERITY_BADGE[report.severity] %>"><%= SEVERITY_LABEL[report.severity] %></span></div></div>
+        <div class="detail-row"><div class="k">ชื่อผู้แจ้ง</div><div class="v"><%= report.reporter_name || '(ไม่ระบุ)' %></div></div>
+        <div class="detail-row"><div class="k">ช่องทางติดต่อ</div><div class="v"><%= report.reporter_contact || '(ไม่ระบุ)' %></div></div>
+        <div class="detail-row"><div class="k">วันที่แจ้ง</div><div class="v"><%= report.created_at %></div></div>
+        <div class="detail-row"><div class="k">อัปเดตล่าสุด</div><div class="v"><%= report.updated_at %></div></div>
+        <div class="detail-row"><div class="k">รายละเอียดปัญหา</div><div class="v detail-desc" style="width:100%"><%= report.description %></div></div>
+      </div>
+
+      <h2 style="margin-top:1.8rem;font-size:1.1rem">เปลี่ยนสถานะ</h2>
+      <form method="POST" action="/admin/reports/<%= report.id %>/status" style="display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;margin-top:0.8rem">
+        <select name="status" class="form-control" style="width:auto;min-width:200px">
+          <% STATUSES.forEach(function(s){ %>
+            <option value="<%= s.value %>" <%= report.status===s.value ? 'selected' : '' %>><%= s.label %></option>
+          <% }); %>
+        </select>
+        <button type="submit" class="btn btn-primary btn-sm">บันทึกสถานะ</button>
+      </form>
+
+      <form method="POST" action="/admin/reports/<%= report.id %>/delete" data-confirm="ยืนยันการลบรายงานนี้ถาวร?" style="margin-top:1.5rem">
+        <button type="submit" class="btn btn-danger">ลบรายงานนี้ถาวร</button>
+      </form>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,55 @@
+<%- include('partials/header', { title: 'รายการที่แจ้ง' }) %>
+
+<div class="container">
+  <div class="page-head">
+    <h1>รายการที่แจ้ง (โปร่งใส)</h1>
+    <p>แสดงสถานะการดำเนินการทุกรายการเพื่อความโปร่งใส — ชื่อและช่องทางติดต่อของผู้แจ้งจะถูกปกปิดเพื่อความเป็นส่วนตัว เรียงล่าสุดก่อน</p>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat"><div class="num"><%= stats.total %></div><div class="lbl">รายงานที่ได้รับทั้งหมด</div></div>
+    <div class="stat"><div class="num c-amber"><%= stats.pending %></div><div class="lbl">รอดำเนินการ</div></div>
+    <div class="stat"><div class="num c-steel"><%= stats.in_progress %></div><div class="lbl">กำลังดำเนินการ</div></div>
+    <div class="stat"><div class="num c-emerald"><%= stats.resolved %></div><div class="lbl">แก้ไขแล้ว</div></div>
+    <div class="stat"><div class="num c-emerald"><%= stats.resolution_rate %>%</div><div class="lbl">อัตราการแก้ไข</div></div>
+  </div>
+
+  <div class="filter-bar">
+    <span class="lbl">กรองตามสถานะ:</span>
+    <a href="/reports" class="<%= statusFilter==='all' ? 'active' : '' %>">ทั้งหมด</a>
+    <a href="/reports?status=pending" class="<%= statusFilter==='pending' ? 'active' : '' %>">รอดำเนินการ</a>
+    <a href="/reports?status=in_progress" class="<%= statusFilter==='in_progress' ? 'active' : '' %>">กำลังดำเนินการ</a>
+    <a href="/reports?status=resolved" class="<%= statusFilter==='resolved' ? 'active' : '' %>">แก้ไขแล้ว</a>
+  </div>
+
+  <% if (reports.length === 0) { %>
+    <div class="card" style="text-align:center;color:var(--text-dim)">
+      ยังไม่มีรายการที่แจ้งในหมวดนี้
+    </div>
+  <% } else { %>
+    <div class="report-list">
+      <% reports.forEach(function(r){ %>
+        <div class="report-card">
+          <div class="head">
+            <div>
+              <span class="ticket-id"><%= r.ticket_id %></span>
+              <span class="type" style="margin-left:0.6rem"><%= ISSUE_LABEL[r.issue_type] %></span>
+            </div>
+            <div class="meta">
+              <span class="badge <%= SEVERITY_BADGE[r.severity] %>"><%= SEVERITY_LABEL[r.severity] %></span>
+              <span class="badge <%= STATUS_BADGE[r.status] %>"><%= STATUS_LABEL[r.status] %></span>
+            </div>
+          </div>
+          <div class="summary"><%= r.summary %></div>
+          <div class="foot">
+            <span>แจ้งเมื่อ: <%= r.created_at %></span>
+            <span>อัปเดตล่าสุด: <%= r.updated_at %></span>
+            <a href="/track?ticket=<%= encodeURIComponent(r.ticket_id) %>">ติดตาม →</a>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

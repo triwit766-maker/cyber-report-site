@@ -1,0 +1,77 @@
+<%- include('../partials/header', { title: 'แผงควบคุมแอดมิน' }) %>
+
+<div class="container">
+  <div class="page-head" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:0.8rem">
+    <div>
+      <h1>แผงควบคุมแอดมิน</h1>
+      <p>จัดการรายงานทั้งหมด — ดูรายละเอียดผู้แจ้ง เปลี่ยนสถานะ ลบรายงาน</p>
+    </div>
+    <a href="/report" class="btn btn-ghost btn-sm">+ แสดงแบบฟอร์มแจ้ง</a>
+  </div>
+
+  <% if (flash === 'updated') { %><div class="alert alert-success">อัปเดตสถานะเรียบร้อย</div><% } %>
+  <% if (flash === 'deleted') { %><div class="alert alert-success">ลบรายงานเรียบร้อย</div><% } %>
+
+  <div class="admin-stats">
+    <div class="admin-stat"><div class="num c-teal"><%= stats.total %></div><div class="lbl">รายงานทั้งหมด</div></div>
+    <div class="admin-stat"><div class="num c-amber"><%= stats.pending %></div><div class="lbl">รอดำเนินการ</div></div>
+    <div class="admin-stat"><div class="num c-steel"><%= stats.in_progress %></div><div class="lbl">กำลังดำเนินการ</div></div>
+    <div class="admin-stat"><div class="num c-emerald"><%= stats.resolved %></div><div class="lbl">แก้ไขแล้ว</div></div>
+    <div class="admin-stat"><div class="num c-red"><%= stats.sev_critical %></div><div class="lbl">ระดับวิกฤต</div></div>
+    <div class="admin-stat"><div class="num c-orange"><%= stats.sev_high %></div><div class="lbl">ระดับสูง</div></div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr>
+          <th>รหัส</th>
+          <th>ประเภท</th>
+          <th>ความรุนแรง</th>
+          <th>ผู้แจ้ง / ติดต่อ</th>
+          <th>รายละเอียด</th>
+          <th>สถานะ</th>
+          <th>วันที่แจ้ง</th>
+          <th>จัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% reports.forEach(function(r){ %>
+          <tr>
+            <td><span class="ticket-id"><%= r.ticket_id %></span></td>
+            <td><%= ISSUE_LABEL[r.issue_type] %></td>
+            <td><span class="badge <%= SEVERITY_BADGE[r.severity] %>"><%= SEVERITY_LABEL[r.severity] %></span></td>
+            <td style="font-size:0.82rem">
+              <div><%= r.reporter_name || '<span style="color:var(--text-faint)">(ไม่ระบุชื่อ)</span>' %></div>
+              <div style="color:var(--text-faint)"><%= r.reporter_contact || '-' %></div>
+            </td>
+            <td class="desc-cell" title="<%= r.description %>"><%= r.description %></td>
+            <td>
+              <form class="inline-form" method="POST" action="/admin/reports/<%= r.id %>/status">
+                <select name="status" onchange="this.form.submit()">
+                  <% STATUSES.forEach(function(s){ %>
+                    <option value="<%= s.value %>" <%= r.status===s.value ? 'selected' : '' %>><%= s.label %></option>
+                  <% }); %>
+                </select>
+              </form>
+            </td>
+            <td style="font-family:var(--mono);font-size:0.78rem;color:var(--text-faint)"><%= r.created_at %></td>
+            <td>
+              <div class="actions">
+                <a href="/admin/reports/<%= r.id %>" class="btn btn-ghost btn-sm">ดู</a>
+                <form class="inline-form" method="POST" action="/admin/reports/<%= r.id %>/delete" data-confirm="ยืนยันการลบรายงาน <%= r.ticket_id %>?">
+                  <button type="submit" class="btn btn-danger btn-sm">ลบ</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }); %>
+        <% if (reports.length === 0) { %>
+          <tr><td colspan="8" style="text-align:center;color:var(--text-faint);padding:2rem">ยังไม่มีรายงาน</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

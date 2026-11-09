@@ -1,0 +1,34 @@
+<footer>
+  <div class="footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand">
+        <span class="logo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        </span>
+        <span class="name"><%= ORG.name %></span>
+      </div>
+      <p><%= ORG.tagline %></p>
+      <p>อีเมล: <a href="mailto:<%= ORG.contactEmail %>" style="display:inline"><%= ORG.contactEmail %></a></p>
+      <p>โทร: <%= ORG.contactPhone %></p>
+    </div>
+    <div class="footer-col">
+      <h4>ข้อมูลสาธารณะ</h4>
+      <a href="/report">แจ้งปัญหาใหม่</a>
+      <a href="/reports">รายการที่แจ้งทั้งหมด</a>
+      <a href="/track">ติดตามรายงานด้วยรหัส</a>
+    </div>
+    <div class="footer-col">
+      <h4>นโยบายและกฎหมาย</h4>
+      <a href="/privacy">นโยบายความเป็นส่วนตัว</a>
+      <a href="/terms">ข้อกำหนดการใช้งาน</a>
+      <a href="/about">เกี่ยวกับเรา / ติดต่อ</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <%= new Date().getFullYear() %> <%= ORG.name %> (<%= ORG.short %>). สงวนลิขสิทธิ์</span>
+    <span>ระบบรับแจ้งเหตุออนไลน์ทำงาน 24 ชั่วโมง</span>
+  </div>
+</footer>
+<script src="/js/main.js"></script>
+</body>
+</html>

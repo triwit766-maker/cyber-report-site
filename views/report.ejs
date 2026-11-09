@@ -1,0 +1,66 @@
+<%- include('partials/header', { title: 'แจ้งปัญหาใหม่' }) %>
+
+<div class="container container-narrow">
+  <div class="page-head">
+    <h1>แจ้งปัญหาความมั่นคงปลอดภัยไซเบอร์</h1>
+    <p>กรอกรายละเอียดปัญหาให้มากที่สุดเท่าที่จะทำได้ เพื่อให้ทีมงานตรวจสอบและดำเนินการได้อย่างรวดเร็ว — ชื่อและช่องทางติดต่อเป็นทางเลือก ไม่แสดงต่อสาธารณะ</p>
+  </div>
+
+  <div class="card">
+    <form id="report-form" method="POST" action="/report" novalidate>
+      <div class="form-group">
+        <label for="reporter_name">ชื่อผู้แจ้ง <span style="color:var(--text-faint);font-weight:400">(ไม่บังคับ)</span></label>
+        <input type="text" id="reporter_name" name="reporter_name" class="form-control <%= errors.reporter_name ? 'form-error' : '' %>"
+               placeholder="ชื่อ-นามสกุล หรือชื่อหน่วยงาน" value="<%= form.reporter_name || '' %>" maxlength="120">
+      </div>
+
+      <div class="form-group">
+        <label for="reporter_contact">ช่องทางติดต่อ (อีเมลหรือเบอร์โทรศัพท์) <span style="color:var(--text-faint);font-weight:400">(ไม่บังคับ)</span></label>
+        <input type="text" id="reporter_contact" name="reporter_contact" class="form-control <%= errors.reporter_contact ? 'form-error' : '' %>"
+               placeholder="name@example.com หรือ 08X-XXX-XXXX" value="<%= form.reporter_contact || '' %>" maxlength="120">
+        <% if (errors.reporter_contact) { %><div class="field-error"><%= errors.reporter_contact %></div><% } %>
+        <div class="hint">หากต้องการให้เจ้าหน้าที่ติดต่อกลับเพื่อขอข้อมูลเพิ่มเติม โปรดระบุช่องทางติดต่อ</div>
+      </div>
+
+      <div class="form-group">
+        <label for="issue_type">ประเภทปัญหา <span class="req">*</span></label>
+        <select id="issue_type" name="issue_type" class="form-control <%= errors.issue_type ? 'form-error' : '' %>" required>
+          <option value="">— กรุณาเลือกประเภทปัญหา —</option>
+          <% ISSUE_TYPES.forEach(function(t){ %>
+            <option value="<%= t.value %>" <%= (form.issue_type === t.value) ? 'selected' : '' %>><%= t.label %></option>
+          <% }); %>
+        </select>
+        <% if (errors.issue_type) { %><div class="field-error"><%= errors.issue_type %></div><% } %>
+      </div>
+
+      <div class="form-group">
+        <label for="severity">ระดับความรุนแรง <span class="req">*</span></label>
+        <select id="severity" name="severity" class="form-control <%= errors.severity ? 'form-error' : '' %>" required>
+          <option value="">— กรุณาเลือกระดับความรุนแรง —</option>
+          <% SEVERITIES.forEach(function(s){ %>
+            <option value="<%= s.value %>" <%= (form.severity === s.value) ? 'selected' : '' %>><%= s.label %></option>
+          <% }); %>
+        </select>
+        <% if (errors.severity) { %><div class="field-error"><%= errors.severity %></div><% } %>
+        <div class="hint">ต่ำ = สงสัยแต่ยังไม่กระทบ · ปานกลาง = กระทบการใช้งานบางส่วน · สูง = กระทบข้อมูล/ระบบสำคัญ · วิกฤต = ข้อมูลรั่ว/ระบบหยุดทำงานทันที</div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">รายละเอียดปัญหา <span class="req">*</span></label>
+        <textarea id="description" name="description" class="form-control <%= errors.description ? 'form-error' : '' %>"
+                  placeholder="อธิบายลักษณะปัญหา เวลาที่เกิด ขั้นตอนที่พบ ลิงก์/โดเมนที่น่าสงสัย (ถ้ามี) การกระทบที่เกิดขึ้น — อย่างน้อย 10 ตัวอักษร"
+                  required minlength="10"><%= form.description || '' %></textarea>
+        <% if (errors.description) { %><div class="field-error"><%= errors.description %></div><% } %>
+        <div class="hint"><span id="desc-count">0</span> / อย่างน้อย 10 ตัวอักษร</div>
+      </div>
+
+      <div class="alert alert-info" style="margin-top:0.5rem">
+        วันที่และเวลาจะถูกบันทึกโดยเซิร์ฟเวอร์อัตโนมัติ หลังส่งแบบฟอร์ม คุณจะได้รับรหัสติดตาม (Ticket ID) เพื่อตรวจสอบสถานะภายหลัง
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;padding:0.8rem;font-size:1rem">ส่งรายงาน</button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

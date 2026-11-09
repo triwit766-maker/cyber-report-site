@@ -1,0 +1,43 @@
+# Render Blueprint — one-click deploy: Web Service (free) + PostgreSQL (free).
+# Deploy: https://dashboard.render.com/blueprints → connect this repo.
+services:
+  - type: web
+    name: cyber-report
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cyber-report-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_USER
+        value: admin
+      # Render generates a strong random password; view/copy it in the
+      # service "Environment" tab after deploy (or set your own there).
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      # Optional email notifications — fill these in dashboard to enable.
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: NOTIFY_EMAIL
+        value: triwit766@gmail.com
+
+databases:
+  - name: cyber-report-db
+    plan: free
+    # Free Postgres on Render expires after 90 days (upgrade to paid to keep).

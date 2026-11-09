@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' · ' : '' %><%= ORG.name %></title>
+  <meta name="description" content="<%= ORG.name %> — รับแจ้งปัญหาความมั่นคงปลอดภัยไซเบอร์ มัลแวร์ ฟิชชิ่ง ฮัก ข้อมูลรั่วไหล DDoS">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232dd4bf'%3E%3Cpath d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <span class="logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      </span>
+      <span class="brand-text">
+        <span class="name"><%= ORG.name %></span>
+        <span class="tag"><%= ORG.short %> · <%= ORG.tagline %></span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="<%= (path||'')==='/' ? 'active' : '' %>">หน้าแรก</a>
+      <a href="/report" class="<%= (path||'')==='/report' ? 'active' : '' %>">แจ้งปัญหา</a>
+      <a href="/reports" class="<%= (path||'')==='/reports' ? 'active' : '' %>">รายการที่แจ้ง</a>
+      <a href="/track" class="<%= (path||'')==='/track' ? 'active' : '' %>">ติดตามรายงาน</a>
+      <a href="/about" class="<%= (path||'')==='/about' ? 'active' : '' %>">เกี่ยวกับเรา</a>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <a href="/admin" class="<%= (path||'').startsWith('/admin') ? 'active' : '' %>">แผงแอดมิน</a>
+        <form class="inline-form" method="POST" action="/logout" style="display:inline">
+          <button type="submit" class="btn btn-ghost btn-sm">ออกจากระบบ</button>
+        </form>
+      <% } else { %>
+        <a href="/login" class="btn btn-primary btn-sm">แอดมิน</a>
+      <% } %>
+    </div>
+  </div>
+</nav>

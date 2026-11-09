@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+
+<div class="container container-narrow">
+  <div class="page-head">
+    <h1>เกี่ยวกับเรา / ติดต่อ</h1>
+    <p>หน่วยงานที่รับผิดชอบ การติดต่อ และเวลาทำการ</p>
+  </div>
+
+  <div class="card prose">
+    <h2>เกี่ยวกับเรา</h2>
+    <p><strong><%= ORG.name %> (<%= ORG.short %>)</strong> เป็นหน่วยงานที่รับผิดชอบในการรับแจ้ง ตรวจสอบ และประสานงานดำเนินการแก้ไขปัญหาความมั่นคงปลอดภัยไซเบอร์สำหรับประชาชน องค์กร และหน่วยงานรัฐ เป้าหมายของเราคือการสร้างช่องทางที่สะดวก ปลอดภัย และโปร่งใสสำหรับการแจ้งเหตุไซเบอร์ พร้อมการติดตามสถานะที่เปิดเผยต่อสาธารณะ</p>
+    <p>พันธกิจ: <em><%= ORG.tagline %></em></p>
+
+    <h2>หน่วยงานที่รับผิดชอบ <span class="placeholder">(ตัวอย่าง — แก้ไขได้ในไฟล์ lib/labels.js)</span></h2>
+    <ul>
+      <li><strong>ชื่อหน่วยงาน:</strong> กลุ่มงานความมั่นคงปลอดภัยไซเบอร์ (Cyber Security Operations Unit)</li>
+      <li><strong>สังกัด:</strong> สำนักงานเทคโนโลยีสารสนเทศและการสื่อสาร <span class="placeholder">(ชื่อหน่วยงานตัวอย่าง)</span></li>
+      <li><strong>ผู้อำนวยการ:</strong> นายกรมธรรม์ ปลอดภัย <span class="placeholder">(ชื่อตัวอย่าง)</span></li>
+    </ul>
+
+    <h2>ที่อยู่ <span class="placeholder">(ที่อยู่ตัวอย่าง — แก้ไขได้)</span></h2>
+    <p><%= ORG.address %></p>
+
+    <h2>ช่องทางติดต่อ</h2>
+    <ul>
+      <li><strong>อีเมลหลัก (รับแจ้งปัญหา):</strong> <a href="mailto:<%= ORG.contactEmail %>"><%= ORG.contactEmail %></a></li>
+      <li><strong>อีเมลฉุกเฉิน (เหตุเร่งด่วน 24 ชม.):</strong> <a href="mailto:emergency@cybershield-th.example">emergency@cybershield-th.example</a> <span class="placeholder">(ตัวอย่าง)</span></li>
+      <li><strong>โทรศัพท์:</strong> <%= ORG.contactPhone %></li>
+      <li><strong>สายด่วนเหตุไซเบอร์:</strong> 1421 <span class="placeholder">(หมายเลขตัวอย่าง — โปรดแทนที่ด้วยหมายเลขจริง)</span></li>
+    </ul>
+
+    <h2>เวลาทำการ</h2>
+    <p><%= ORG.hours %></p>
+    <p>ระบบรับแจ้งเหตุออนไลน์ผ่านเว็บไซต์ทำงานตลอด 24 ชั่วโมง ทุกวัน รวมถึงวันหยุดนักขัตฤกษ์ เหตุที่มีระดับความรุนแรง "วิกฤต" จะได้รับการแจ้งเตือนไปยังทีมเฝ้าระวังทันที</p>
+
+    <h2>ช่องทางอื่นๆ</h2>
+    <ul>
+      <li><a href="/report">แจ้งปัญหาใหม่</a> — ผ่านแบบฟอร์มออนไลน์</li>
+      <li><a href="/track">ติดตามรายงาน</a> — ดูสถานะด้วยรหัส Ticket ID</li>
+      <li><a href="/reports">รายการที่แจ้งทั้งหมด</a> — ตรวจสอบสถานะแบบโปร่งใส</li>
+      <li><a href="/privacy">นโยบายความเป็นส่วนตัว</a> · <a href="/terms">ข้อกำหนดการใช้งาน</a></li>
+    </ul>
+
+    <div class="alert alert-info" style="margin-top:1.5rem">
+      หมายเหตุ: ข้อมูลติดต่อที่ทำเครื่องหมาย <em>(ตัวอย่าง)</em> เป็นข้อมูลตัวยึดตำแหน่ง ผู้ดูแลระบบสามารถแก้ไขได้ในไฟล์ <code>lib/labels.js</code> (ส่วน ORG) ก่อนนำไปใช้งานจริง
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

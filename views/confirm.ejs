@@ -1,0 +1,47 @@
+<%- include('partials/header') %>
+
+<div class="container container-narrow">
+  <div class="card">
+    <div class="alert alert-success">
+      <strong>บันทึกการแจ้งเรียบร้อยแล้ว</strong> — ทีมงานได้รับรายงานของคุณและจะดำเนินการตามความเร่งด่วน
+    </div>
+
+    <div class="ticket-box">
+      <div class="lbl">รหัสติดตามรายงาน (Ticket ID)</div>
+      <div class="tid"><%= report.ticket_id %></div>
+      <div class="warn">กรุณาบันทึกรหัสนี้ไว้ เพื่อใช้ติดตามสถานะการดำเนินการภายหลัง</div>
+    </div>
+
+    <h2>สรุปรายการที่คุณแจ้ง</h2>
+    <div class="detail-grid" style="margin-top:1rem">
+      <div class="detail-row"><div class="k">รหัสติดตาม</div><div class="v ticket-id"><%= report.ticket_id %></div></div>
+      <div class="detail-row"><div class="k">ประเภทปัญหา</div><div class="v"><%= ISSUE_LABEL[report.issue_type] %></div></div>
+      <div class="detail-row"><div class="k">ระดับความรุนแรง</div><div class="v"><span class="badge <%= SEVERITY_BADGE[report.severity] %>"><%= SEVERITY_LABEL[report.severity] %></span></div></div>
+      <% if (report.reporter_name) { %>
+        <div class="detail-row"><div class="k">ชื่อผู้แจ้ง</div><div class="v"><%= report.reporter_name %></div></div>
+      <% } %>
+      <% if (report.reporter_contact) { %>
+        <div class="detail-row"><div class="k">ช่องทางติดต่อ</div><div class="v"><%= report.reporter_contact %></div></div>
+      <% } %>
+      <div class="detail-row"><div class="k">วันที่แจ้ง</div><div class="v"><%= report.created_at %></div></div>
+      <div class="detail-row"><div class="k">รายละเอียด</div><div class="v detail-desc" style="width:100%"><%= report.description %></div></div>
+    </div>
+
+    <h2 style="margin-top:1.8rem">ขั้นตอนต่อไป — จะเกิดอะไรขึ้น</h2>
+    <ol class="steps">
+      <li><strong>ทีมงานจะตรวจสอบรายงาน</strong> ภายใน 24 ชั่วโมงทำการ (เหตุวิกฤตจะได้รับการแจ้งเตือนทันที)</li>
+      <li>สถานะจะเปลี่ยนเป็น <span class="badge st-progress">กำลังดำเนินการ</span> เมื่อผู้ดูแลเริ่มตรวจสอบ</li>
+      <li>หากต้องการข้อมูลเพิ่มเติม เจ้าหน้าที่จะติดต่อกลับตามช่องทางที่คุณแจ้งไว้</li>
+      <li>เมื่อดำเนินการเสร็จสิ้น สถานะจะเปลี่ยนเป็น <span class="badge st-resolved">แก้ไขแล้ว</span></li>
+      <li>คุณสามารถ<strong>ติดตามสถานะ</strong>ได้ตลอดเวลาด้วยรหัส <span class="ticket-id"><%= report.ticket_id %></span> ที่หน้า <a href="/track">ติดตามรายงาน</a></li>
+    </ol>
+
+    <div style="display:flex; gap:0.7rem; flex-wrap:wrap; margin-top:1.5rem">
+      <a href="/track?ticket=<%= encodeURIComponent(report.ticket_id) %>" class="btn btn-primary">ติดตามสถานะรายงานนี้</a>
+      <a href="/report" class="btn btn-ghost">แจ้งปัญหาเพิ่ม</a>
+      <a href="/" class="btn btn-ghost">กลับหน้าแรก</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
